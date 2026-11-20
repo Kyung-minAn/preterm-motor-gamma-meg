@@ -1,0 +1,10 @@
+# local configuration and any data or results (participant data must not be committed)
+config.py
+results/
+*.xlsx
+*.xls
+*.csv
+*.mat
+*.tif
+__pycache__/
+.DS_Store
