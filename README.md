@@ -73,13 +73,18 @@ cd code && python3 04_gamma_analyses.py   # or a single step (after steps 1 and 
 | `03_participants_behaviour.py` | Table 1; behavioural group comparisons (Fig. 1B); Table 2 (response time × perinatal and motor measures) |
 | `04_gamma_analyses.py` | Table 3; Group × Hemisphere mixed ANOVA with Holm-corrected post hoc comparisons (gamma power, peak frequency); laterality index; model checks and Mann–Whitney tests; ICA components, rejected and averaged epochs by group |
 | `05_correlations.py` | laterality index × motor milestones and motor scores (whole sample, preterm group; zero-order and partial); exploratory gamma × response-time correlations |
-| `06_sensitivity_analyses.py` | covariate adjustment (age, sex, K-ABC Mental Processing Composite, number of averaged epochs, ADHD Rating Scale); exclusion of children with autism spectrum disorder or visual concerns; Group × Sex; head position; alternative laterality measures; hemispheric asymmetry versus overall gamma level as predictors of age at independent walking |
+| `06_sensitivity_analyses.py` | covariate adjustment (age, sex, K-ABC Achievement, K-ABC Mental Processing Composite, number of averaged epochs, ADHD Rating Scale); exclusion of children with autism spectrum disorder or visual concerns; preterm children with versus without retinopathy of prematurity; Group × Sex; head position; alternative laterality measures; hemispheric asymmetry versus overall gamma level as predictors of age at independent walking |
 | `07_beta.py` | beta-band activity (An et al., 2021 windows) |
 | `08_freesurfer.py` | intracranial and corpus callosum volumes; precentral cortical thickness |
 | `09_figures.py` | Figures 3 and 4 |
 | `10_power.py` | sensitivity power analysis and power for the effect reported by An et al. (2018); needs no participant data |
 
 Statistical conventions: two-tailed tests; independent-samples t-tests with Welch's correction when Levene's test is significant; Cohen's d from the pooled SD; Holm correction within each family of post hoc comparisons; Spearman correlations with Benjamini–Hochberg FDR correction within each family; α = 0.05.
+
+## Version history
+
+- **1.0.1**: `03_participants_behaviour.py` skips a variable when a group has fewer than two values; `06_sensitivity_analyses.py` adds the adjustment for K-ABC Achievement scores and the comparison of preterm children with and without retinopathy of prematurity. The results in the revised article were produced with this version, using participant data re-checked against the original clinical records.
+- **1.0.0**: first release.
 
 ## References
 

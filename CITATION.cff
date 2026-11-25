@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this code, please cite the article below."
 title: "Analysis code for: Motor cortical gamma organisation following preterm birth relates to early motor development"
-version: 1.0.0
+version: 1.0.1
 license: MIT
 authors:
   - given-names: Jaeyoung
