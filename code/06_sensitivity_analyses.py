@@ -1,7 +1,7 @@
 """Step 6: sensitivity and additional analyses reported in the response to the reviewers.
 
- A  covariate-adjusted group effects (age + sex; + K-ABC Mental Processing Composite; number of averaged epochs;
-    ADHD Rating Scale) on contralateral and ipsilateral gamma power, the hemispheric difference
+ A  covariate-adjusted group effects (age + sex; + K-ABC Achievement; + K-ABC Mental Processing Composite;
+    number of averaged epochs; ADHD Rating Scale) on contralateral and ipsilateral gamma power, the hemispheric difference
     (Group x Hemisphere interaction) and the laterality index
  B  exclusion analyses (autism spectrum disorder; retinopathy of prematurity; any visual concern;
     glasses not worn during MEG)
@@ -10,7 +10,8 @@
  E  alternative laterality measures (hemispheric difference in dB; absolute-denominator index; difference in %)
  F  hemispheric asymmetry versus overall gamma level as predictors of age at independent walking
     (OLS with standardised variables; Freedman-Lane permutation test and bootstrap confidence interval)
- G  ADHD Rating Scale and task performance of preterm children with visual concerns
+ G  ADHD Rating Scale; preterm children with versus without retinopathy of prematurity; task performance of
+    preterm children with visual concerns
 Output: OUTPUT_DIR/Sensitivity_analyses.xlsx"""
 import numpy as np
 import pandas as pd
@@ -30,7 +31,8 @@ outcomes = [("Contralateral gamma power", "MEG_Contrapower"), ("Ipsilateral gamm
 sheets = {}
 
 # ---- A: covariate-adjusted group effects ----
-models = {"age + sex": "Age_month + Female", "age + sex + K-ABC MPC": "Age_month + Female + KABC_MPC",
+models = {"age + sex": "Age_month + Female", "age + sex + K-ABC Achievement": "Age_month + Female + KABC_Achievement",
+          "age + sex + K-ABC MPC": "Age_month + Female + KABC_MPC",
           "number of averaged epochs": "nAvg_contra"}
 if has_clinical:
     models.update({"ADHD-RS": "ADHD_RS", "age + sex + ADHD-RS": "Age_month + Female + ADHD_RS"})
@@ -161,6 +163,14 @@ if has_clinical:
         rows.append(dict(Analysis=f"Preterm with vs without visual concern: {lab}",
                          statistic=f"median {a.median():.0f} (n = {len(a)}) vs {b.median():.0f} (n = {len(b)})",
                          P_MannWhitney=stats.mannwhitneyu(a, b).pvalue))
+    rop = pt.ROP_status == "yes"
+    for lab, col in [outcomes[0], outcomes[2], outcomes[3], ("Age at independent walking", "Walk_alone_ca"),
+                     ("Mean response time (ms)", "RT_mean_ms")]:
+        r = ttest_levene(pt.loc[rop, col], pt.loc[~rop, col])
+        rows.append(dict(Analysis=f"Preterm with vs without ROP: {lab}",
+                         statistic=f"{describe(pt.loc[rop, col])[0]} vs {describe(pt.loc[~rop, col])[0]}; "
+                                   f"t({r['df']:.1f}) = {r['t']:.2f} (n = {r['n1']} vs {r['n2']})",
+                         P=r["p"], P_MannWhitney=stats.mannwhitneyu(pt.loc[rop, col].dropna(), pt.loc[~rop, col].dropna()).pvalue))
     rows.append(dict(Analysis="ROP status (preterm)", statistic=str(pt.ROP_status.value_counts().to_dict())))
     sheets["G_ADHD_vision"] = pd.DataFrame(rows)
 

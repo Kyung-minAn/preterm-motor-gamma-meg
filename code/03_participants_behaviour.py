@@ -43,8 +43,8 @@ def desc(s):
 
 rows = []
 for label, col in cont:
-    if col not in df:
-        continue
+    if col not in df or ft[col].notna().sum() < 2 or pt[col].notna().sum() < 2:
+        continue   # skipped when a group has fewer than two values
     a, b, t = desc(ft[col]), desc(pt[col]), ttest_levene(ft[col], pt[col])
     row = {"Variable": label}
     for g, s in [("FT", a), ("PT", b)]:
